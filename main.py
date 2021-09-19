@@ -5,9 +5,9 @@ from flask import Flask, request, render_template, url_for, jsonify, send_from_d
 from werkzeug.utils import redirect, secure_filename
 
 
-def hex_to_rgb(value):
+def hex_to_rgb(value):  # функция перевода кода hex в rgb
     h = value.lstrip('#')
-    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))  # получаем (n, n, n), где n=0-255
 
 
 UPLOAD_FOLDER = '/'
@@ -30,14 +30,14 @@ def index():
 def upload_file():
     if request.method == 'POST' and 'text' in request.form and 'file' in request.files:
         uploading_file = request.files['file']
-        if uploading_file and allowed_file(uploading_file.filename):
+        if uploading_file and allowed_file(uploading_file.filename):  # проверяем файл на допустимый формат
             hex_colour = request.form['text']
-            if re.match(r'#[0-9A-Fa-f]{6}', hex_colour):
-                filename = secure_filename(uploading_file.filename)
+            if re.match(r'#[0-9A-Fa-f]{6}', hex_colour):  # проверям hex регулярным вырожением на формат
+                filename = secure_filename(uploading_file.filename)  # для получения безопасного имени файла
                 uploading_file.save(uploading_file.filename)
                 colour_rgb = hex_to_rgb(hex_colour)
                 im = np.array(Image.open(filename).convert('RGB'))
-                result = np.count_nonzero(np.all(im == colour_rgb, axis=2))
+                result = np.count_nonzero(np.all(im == colour_rgb, axis=2))  # подсчеты пикселей
                 black_pixels = np.count_nonzero(np.all(im == [0, 0, 0], axis=2))
                 while_pixels = np.count_nonzero(np.all(im == [255, 255, 255], axis=2))
                 if black_pixels > while_pixels:
@@ -56,7 +56,7 @@ def upload_file():
     return jsonify({'message': 'file not upload'})
 
 
-@app.route('/<filename>')  # что-то не так?!
+@app.route('/<filename>')  # функция для открытия файла, но что-то тут не так
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
