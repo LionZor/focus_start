@@ -1,0 +1,20 @@
+html {
+  height: 100%;
+}
+
+body {
+  background: #000000;
+  color: #FFFFFF;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+}
+
+input[type="file" i] {
+  margin-bottom: 20px;
+}

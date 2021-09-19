@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="static/css/upload.css">
+</head>
+
+<body>
+  <form id="form" method=POST action="/" enctype="multipart/form-data">
+    <h1>Select a file</h1>
+    <input type=file name=file id="file-uploader">
+    <h1>enter hex</h1>
+    <input type="text" name="text" value="#" placeholder="#000000" maxlength="7">
+    <div id="image-grid"></div>
+    <input type="submit" value="Отправить" />
+  </form>
+
+
+</body>
+<script>
+
+  // function submitHandler(event) {
+  //   event.preventDefault()
+  //   console.log(event.target.files)
+  // };
+  // const form = document.getElementById('form');
+  // form.addEventListener('submit', submitHandler);
+
+
+  const fileUploader = document.getElementById('file-uploader');
+  const reader = new FileReader();
+  const imageGrid = document.getElementById('image-grid');
+  fileUploader.addEventListener('change', (event) => {
+    const files = event.target.files;
+    const file = files[0];
+    reader.readAsDataURL(file);
+
+    reader.addEventListener('load', (event) => {
+      const img = document.createElement('img');
+      imageGrid.appendChild(img);
+      img.src = event.target.result;
+      img.alt = file.name;
+    });
+    console.log('files', files);
+  });
+
+</script>
+</html>
